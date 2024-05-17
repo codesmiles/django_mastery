@@ -1,0 +1,66 @@
+{% load static %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+
+    <link rel="stylesheet" href="{$ static "blog/main.css" %}">
+
+    {% if title %}
+    <title>Django Blog - {{ title }}</title>
+    {% else %}
+    <title>Django Blog</title>
+    {% endif %}
+  </head>
+  <body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
+            <div>
+                <a href="{% url 'blog-home' %}">
+                    <span>DJANGO MASTERY</span>
+                </a>
+            </div>
+            {% if user.is_authenticated %}
+              <div>
+                <a class="navbar-brand" href="{% url 'blog-home' %}">Home</a>
+                <a class="navbar-brand" href="{% url 'blog-about' %}">About</a>
+                <a class="navbar-brand" href="{% url 'profile' %}">Profile</a>
+                <form action="{% url 'logout' %}" method="post" class="navbar-brand">
+                  {% csrf_token %}
+                  <input  type="submit" value="logout">
+                </form>
+              </div>
+            {% else %}
+              <div>
+                  <a class="navbar-brand" href="{% url 'login' %}">Login</a>
+                  <a class="navbar-brand" href="{% url 'register' %}">Register</a>
+              </div>
+            {% endif %}
+            </button>
+        </nav>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+      <div class="container mt-5">{% block content%}{% endblock content%}</div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </body>
+</html>
